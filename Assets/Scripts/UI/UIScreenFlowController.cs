@@ -4,33 +4,44 @@ public class UIScreenFlowController : MonoBehaviour
 {
     public enum ScreenState
     {
-        Title,
+        Title = 0,
         PlayHud,
-        Pause,
-        Result
+        Result,
+
+        Max
     }
 
     #region serialized
 
-    [SerializeField] private GameObject titleScreen;
-    [SerializeField] private GameObject playHudScreen;
-    [SerializeField] private GameObject pauseScreen;
-    [SerializeField] private GameObject resultScreen;
+    [SerializeField] private UIScreen titleScreen;
+    [SerializeField] private UIScreen playHudScreen;
+    [SerializeField] private UIScreen resultScreen;
 
     #endregion
 
-    private ScreenState _currentScreenState;
+    private ScreenState _currentScreenState = ScreenState.Max;
+    private UIScreen[] _uIScreens;
+
+    private bool IsCurrentScreenStateValid => IsScreenStateValid(_currentScreenState);
 
     #region unity event
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private void Start() => ChangeScreenState(ScreenState.Title);
+    private void Awake() => _uIScreens = new UIScreen[] { titleScreen, playHudScreen, resultScreen };
+
+    private void Start()
+    {
+        foreach (UIScreen screen in _uIScreens)
+        {
+            screen.Hide();
+        }
+
+        ChangeScreenState(ScreenState.Title);
+    }
 
     #endregion
 
     public void ShowTitle() => ChangeScreenState(ScreenState.Title);
     public void ShowPlayHud() => ChangeScreenState(ScreenState.PlayHud);
-    public void ShowPause() => ChangeScreenState(ScreenState.Pause);
     public void ShowResult() => ChangeScreenState(ScreenState.Result);
     public void QuitGame()
     {
@@ -41,17 +52,28 @@ public class UIScreenFlowController : MonoBehaviour
 #endif
     }
 
+    private bool IsScreenStateValid(ScreenState state) => state >= ScreenState.Title && state < ScreenState.Max;
+
     private void ChangeScreenState(ScreenState newState)
     {
-        _currentScreenState = newState;
-        ShowCurrentScreen();
-    }
+        if (!IsScreenStateValid(newState))
+        {
+            Debug.LogError($"Invalid screen state: {newState}");
+            return;
+        }
 
-    private void ShowCurrentScreen()
-    {
-        titleScreen.SetActive(_currentScreenState == ScreenState.Title);
-        playHudScreen.SetActive(_currentScreenState == ScreenState.PlayHud);
-        pauseScreen.SetActive(_currentScreenState == ScreenState.Pause);
-        resultScreen.SetActive(_currentScreenState == ScreenState.Result);
+        if (IsCurrentScreenStateValid)
+        {
+            if (_currentScreenState == newState)
+            {
+                return;
+            }
+
+            _uIScreens[(int)_currentScreenState].Hide();
+        }
+
+        _currentScreenState = newState;
+
+        _uIScreens[(int)_currentScreenState].Show();
     }
 }
