@@ -1,33 +1,36 @@
 using UnityEngine;
 
-public class UIScreen : MonoBehaviour
+namespace UI.Screen
 {
-    public void Show()
+    public class UIScreen : MonoBehaviour
     {
-        gameObject.SetActive(true);
-
-        OnShow();
-    }
-
-    public void Hide()
-    {
-        OnHide();
-
-        gameObject.SetActive(false);
-    }
-
-    public void Show(bool isShow)
-    {
-        if (isShow)
+        public void Show()
         {
-            Show();
-        }
-        else
-        {
-            Hide();
-        }
-    }
+            gameObject.SetActive(true);
 
-    protected virtual void OnShow() { }
-    protected virtual void OnHide() { }
+            OnShow();
+        }
+
+        public void Hide()
+        {
+            OnHide();
+
+            gameObject.SetActive(false);
+        }
+
+        public void Show(bool isShow)
+        {
+            if (isShow)
+            {
+                Show();
+            }
+            else
+            {
+                Hide();
+            }
+        }
+
+        protected virtual void OnShow() { }
+        protected virtual void OnHide() { }
+    }
 }
