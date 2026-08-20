@@ -1,5 +1,14 @@
 {
   "dependencies": {
+    "com.kidzdev.unity.sliced-fill-image": {
+      "version": "https://github.com/knabsiraphop/kidzdev-unity-sliced-fill-image.git#v1.0.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.ugui": "2.0.0"
+      },
+      "hash": "e1e72da05ce2129a3ea45f22e7d1d772bbe3427a"
+    },
     "com.unity.ai.navigation": {
       "version": "2.0.14",
       "depth": 0,
