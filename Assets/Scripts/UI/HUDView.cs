@@ -1,13 +1,12 @@
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using KidzDev.Unity.SlicedFillImage;
 
 public class HUDView : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI timeText;
-    [SerializeField] private Slider healthSlider;
-    [SerializeField] private Image healthImage;
+    [SerializeField] private SlicedFilledImage healthImageSliced;
 
     private int _score;
     private float _remainTime = 60f;
@@ -18,16 +17,14 @@ public class HUDView : MonoBehaviour
     {
         _score = 0;
         _remainTime = 60f;
-        healthSlider.maxValue = 100f;
-        healthImage.fillAmount = 1f;
-
+        healthImageSliced.fillAmount = 1f;
         Refresh();
     }
 
     // Update is called once per frame
     private void Update()
     {
-        
+
     }
 
     public void AddScoreAndDamage()
@@ -42,7 +39,6 @@ public class HUDView : MonoBehaviour
     {
         scoreText.text = _score.ToString();
         timeText.text = _remainTime.ToString("F1");
-        healthSlider.value = _health;
-        healthImage.fillAmount = _health / 100f;
+        healthImageSliced.fillAmount = _health / 100f;
     }
 }
