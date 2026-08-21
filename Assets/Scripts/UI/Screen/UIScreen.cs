@@ -4,11 +4,18 @@ namespace UI.Screen
 {
     public class UIScreen : MonoBehaviour
     {
+        [SerializeField] protected GameObject firstSelectedGameObject;
+
         public void Show()
         {
             gameObject.SetActive(true);
 
             OnShow();
+
+            if (firstSelectedGameObject)
+            {
+                UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(firstSelectedGameObject);
+            }
         }
 
         public void Hide()
@@ -30,7 +37,7 @@ namespace UI.Screen
             }
         }
 
-        protected virtual void OnShow() { }
-        protected virtual void OnHide() { }
+        protected virtual void OnShow() => Input.InputByDevice.Instance.SetInputMode(Input.InputMode.UI);
+        protected virtual void OnHide() => Input.InputByDevice.Instance.SetInputMode(Input.InputMode.Player);
     }
 }
